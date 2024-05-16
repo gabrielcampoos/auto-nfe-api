@@ -6,6 +6,7 @@ import {
   GetUserUsecase,
   ListAllUserUsecase,
   LoginUserUsecase,
+  UpdateCountUsecase,
 } from "../usecases";
 
 export class UserController {
@@ -69,6 +70,28 @@ export class UserController {
       const usecase = new GetUserUsecase();
 
       const result = await usecase.execute(username);
+
+      return httpHelper.success(response, result);
+    } catch (error: any) {
+      return httpHelper.badRequestError(
+        response,
+        Result.error(500, error.toString())
+      );
+    }
+  }
+
+  static async updateCount(request: Request, response: Response) {
+    const { username } = request.params;
+    const { count } = request.body;
+    try {
+      const usecase = new UpdateCountUsecase();
+
+      const result = await usecase.execute({
+        username,
+        newData: {
+          count,
+        },
+      });
 
       return httpHelper.success(response, result);
     } catch (error: any) {

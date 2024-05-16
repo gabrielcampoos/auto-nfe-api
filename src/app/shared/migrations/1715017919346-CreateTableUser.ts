@@ -22,6 +22,10 @@ export class CreateTableUser1715017919346 implements MigrationInterface {
             type: "varchar",
             length: "255",
           },
+          {
+            name: "count",
+            type: "int4",
+          },
         ],
       })
     );

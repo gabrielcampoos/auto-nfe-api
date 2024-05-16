@@ -2,6 +2,7 @@ import { DatabaseConnection } from "../../../../main/database/typeorm.connection
 import { User } from "../../../models";
 import { UserEntity } from "../../../shared/entities";
 import { CreateUserDto } from "../dtos";
+import { UpdateCountDto } from "../dtos/update-count.dto";
 
 export class UserRepository {
   private _manager = DatabaseConnection.connection.manager;
@@ -24,6 +25,18 @@ export class UserRepository {
     return this.entityToModel(createdUser);
   }
 
+  async updateCount(data: UpdateCountDto): Promise<void> {
+    const { username, count } = data;
+
+    await this._manager.update(
+      UserEntity,
+      {
+        username: username,
+      },
+      { count }
+    );
+  }
+
   async listUser(): Promise<User[]> {
     const listUser = await this._manager.find(UserEntity);
 
@@ -31,6 +44,6 @@ export class UserRepository {
   }
 
   private entityToModel(dataDB: UserEntity): User {
-    return new User(dataDB.id, dataDB.username, dataDB.password);
+    return new User(dataDB.id, dataDB.username, dataDB.password, dataDB.count);
   }
 }

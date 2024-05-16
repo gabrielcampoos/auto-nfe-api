@@ -13,6 +13,8 @@ export default () => {
   );
 
   router.post("/login", validateLogin, UserController.loginUser);
+  router.put("/updateCount/:username", UserController.updateCount);
+
   router.get("/user", UserController.listUser);
   router.get("/validateDataUser", auth, UserController.getUser);
 
